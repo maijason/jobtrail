@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# JobTrail
 
-## Getting Started
+An open-source job hunt tracker that shows you why you match a role, and keeps your data yours.
 
-First, run the development server:
+> Early development. Things will change a lot.
+
+## Why
+
+Most job trackers give you a vague "87% match" score and keep your resume on their servers. JobTrail is meant to be different:
+
+- **Explainable matching.** Every requirement in a posting is marked met, partial, or missing, with the resume line that supports it.
+- **Your data stays yours.** Self-host it and bring your own LLM API key.
+
+## Planned features
+
+- [ ] Browser extension to save a job posting from the page you're on
+- [ ] Extract required and nice-to-have skills from a posting
+- [ ] Match requirements against your resume
+- [ ] Board view for tracking application status
+- [ ] Follow-up reminders
+
+## Tech stack
+
+- Next.js (App Router) + TypeScript
+- Tailwind CSS
+- Postgres (planned)
+- Chrome extension, Manifest V3 (planned)
+
+## Running locally
+
+Requires Node.js 20+.
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## License
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
