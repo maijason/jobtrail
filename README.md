@@ -1,5 +1,7 @@
 # JobTrail
 
+[![CI](https://github.com/maijason/jobtrail/actions/workflows/ci.yml/badge.svg)](https://github.com/maijason/jobtrail/actions/workflows/ci.yml)
+
 An open-source job hunt tracker that shows you why you match a role, and keeps your data yours.
 
 > Early development. Things will change a lot.
