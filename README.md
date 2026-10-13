@@ -28,6 +28,18 @@ Most job trackers give you a vague "87% match" score and keep your resume on the
 - Postgres + Drizzle ORM
 - Chrome extension, Manifest V3 (planned)
 
+## Data model
+
+| Table | What it stores |
+|---|---|
+| `jobs` | A posting as it looked when you saved it: company, title, location, description, and URL (unique, so the same posting isn't saved twice) |
+| `applications` | Your progress on a job: status (`saved` → `applied` → `interviewing` → `offer` / `rejected` / `withdrawn`), date applied, notes |
+| `resumes` | Plain-text versions of your resume to match postings against |
+
+Jobs and applications are separate on purpose. The posting is a snapshot of what the company wrote, and the application is what you're doing about it. Keeping them apart means requirement extraction and match results can attach to the job without mixing in tracking state.
+
+The schema lives in [`src/db/schema.ts`](src/db/schema.ts), and SQL migrations are generated into [`drizzle/`](drizzle).
+
 ## Running locally
 
 Requires Node.js 20+ and Docker.
