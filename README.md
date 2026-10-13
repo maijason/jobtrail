@@ -25,15 +25,18 @@ Most job trackers give you a vague "87% match" score and keep your resume on the
 
 - Next.js (App Router) + TypeScript
 - Tailwind CSS
-- Postgres (planned)
+- Postgres + Drizzle ORM
 - Chrome extension, Manifest V3 (planned)
 
 ## Running locally
 
-Requires Node.js 20+.
+Requires Node.js 20+ and Docker.
 
 ```bash
 npm install
+cp .env.example .env.local
+npm run db:up        # start Postgres in Docker
+npm run db:migrate   # create the tables
 npm run dev
 ```
 
