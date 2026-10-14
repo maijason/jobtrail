@@ -15,7 +15,7 @@ Most job trackers give you a vague "87% match" score and keep your resume on the
 
 ## Planned features
 
-- [ ] Browser extension to save a job posting from the page you're on
+- [x] Browser extension to save a job posting from the page you're on
 - [ ] Extract required and nice-to-have skills from a posting
 - [ ] Match requirements against your resume
 - [ ] Board view for tracking application status
@@ -53,6 +53,16 @@ npm run dev
 ```
 
 Then open http://localhost:3000.
+
+### Browser extension
+
+The extension in [`extension/`](extension) saves the job page you're on to your local JobTrail.
+
+1. Go to `chrome://extensions` and turn on **Developer mode**.
+2. Click **Load unpacked** and pick the `extension` folder.
+3. Open a job posting and click the JobTrail icon.
+
+It reads the posting's [schema.org `JobPosting`](https://schema.org/JobPosting) data when the page has it (Lever, Workday, LinkedIn, and many others), and falls back to the page title and content otherwise. You can edit the title, company, and location before saving.
 
 ## License
 

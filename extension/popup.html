@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>JobTrail</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <h1>Save to JobTrail</h1>
+
+    <form id="job-form">
+      <label>
+        Title
+        <input id="title" required maxlength="200" />
+      </label>
+      <label>
+        Company
+        <input id="company" required maxlength="200" />
+      </label>
+      <label>
+        Location
+        <input id="location" maxlength="200" />
+      </label>
+      <button id="save" type="submit" disabled>Save job</button>
+    </form>
+
+    <p id="status" role="status"></p>
+
+    <script src="extract.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>
