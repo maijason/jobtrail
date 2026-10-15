@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const features = [
   {
     title: "Save postings in one click",
@@ -22,6 +24,12 @@ export default function Home() {
         An open-source job hunt tracker that shows you why you match a role,
         and keeps your data yours.
       </p>
+      <Link
+        href="/jobs"
+        className="mt-8 w-fit rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background hover:opacity-90"
+      >
+        View saved jobs
+      </Link>
 
       <ul className="mt-12 grid gap-6 sm:grid-cols-3">
         {features.map((feature) => (
