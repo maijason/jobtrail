@@ -55,6 +55,15 @@ npm run dev
 
 Then open http://localhost:3000.
 
+### Tests
+
+```bash
+npm test             # run once
+npm run test:watch   # re-run on save
+```
+
+Tests use [Vitest](https://vitest.dev) and don't need the database running. CI runs lint, typecheck, tests, and a production build on every push.
+
 ### Browser extension
 
 The extension in [`extension/`](extension) saves the job page you're on to your local JobTrail.
