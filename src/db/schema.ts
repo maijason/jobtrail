@@ -1,5 +1,6 @@
 import {
   index,
+  integer,
   pgEnum,
   pgTable,
   text,
@@ -54,6 +55,28 @@ export const applications = pgTable(
   (table) => [index("applications_status_idx").on(table.status)],
 );
 
+export const requirementKind = pgEnum("requirement_kind", [
+  "required",
+  "preferred",
+]);
+
+// A single requirement pulled out of a job's description.
+export const requirements = pgTable(
+  "requirements",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    jobId: uuid("job_id")
+      .notNull()
+      .references(() => jobs.id, { onDelete: "cascade" }),
+    kind: requirementKind("kind").notNull(),
+    text: text("text").notNull(),
+    // Order the requirement appeared in the posting.
+    position: integer("position").notNull(),
+    createdAt: timestamps.createdAt,
+  },
+  (table) => [index("requirements_job_id_idx").on(table.jobId)],
+);
+
 export const resumes = pgTable("resumes", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull(),
@@ -64,4 +87,5 @@ export const resumes = pgTable("resumes", {
 export type Job = typeof jobs.$inferSelect;
 export type NewJob = typeof jobs.$inferInsert;
 export type Application = typeof applications.$inferSelect;
+export type Requirement = typeof requirements.$inferSelect;
 export type Resume = typeof resumes.$inferSelect;
