@@ -1,28 +1,14 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { connection } from "next/server";
 import { Suspense } from "react";
-import type { Application } from "@/db/schema";
 import { listJobs } from "@/lib/jobs";
 import { DeleteJobButton } from "./delete-job-button";
+import { dateFormat, STATUS_LABELS, STATUS_STYLES } from "./status";
 
 export const metadata: Metadata = {
   title: "Saved jobs · JobTrail",
 };
-
-const STATUS_STYLES: Record<Application["status"], string> = {
-  saved: "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300",
-  applied: "bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300",
-  interviewing:
-    "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300",
-  offer: "bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-300",
-  rejected: "bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300",
-  withdrawn: "bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400",
-};
-
-const dateFormat = new Intl.DateTimeFormat("en-US", {
-  month: "short",
-  day: "numeric",
-});
 
 export default function JobsPage() {
   return (
@@ -56,22 +42,20 @@ async function JobList() {
       {jobs.map((job) => (
         <li key={job.id} className="flex items-center gap-4 py-4">
           <div className="min-w-0 flex-1">
-            <a
-              href={job.url}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href={`/jobs/${job.id}`}
               className="font-medium hover:underline"
             >
               {job.title}
-            </a>
+            </Link>
             <p className="mt-1 truncate text-sm text-zinc-600 dark:text-zinc-400">
               {[job.company, job.location].filter(Boolean).join(" · ")}
             </p>
           </div>
           <span
-            className={`rounded-full px-2.5 py-0.5 text-xs font-medium capitalize ${STATUS_STYLES[job.status]}`}
+            className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${STATUS_STYLES[job.status]}`}
           >
-            {job.status}
+            {STATUS_LABELS[job.status]}
           </span>
           <time
             dateTime={job.savedAt.toISOString()}

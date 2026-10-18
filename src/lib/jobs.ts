@@ -1,7 +1,7 @@
-import { desc, eq } from "drizzle-orm";
+import { asc, desc, eq } from "drizzle-orm";
 import { z } from "zod";
 import { getDb } from "@/db";
-import { applications, jobs, type Job } from "@/db/schema";
+import { applications, jobs, requirements, type Job } from "@/db/schema";
 import { normalizeJobUrl } from "@/lib/url";
 
 export const saveJobSchema = z.object({
@@ -59,6 +59,25 @@ export async function listJobs() {
     .from(jobs)
     .innerJoin(applications, eq(applications.jobId, jobs.id))
     .orderBy(desc(jobs.createdAt));
+}
+
+/** A job with its application and extracted requirements, or null. */
+export async function getJobDetails(id: string) {
+  const db = getDb();
+  const [row] = await db
+    .select({ job: jobs, application: applications })
+    .from(jobs)
+    .innerJoin(applications, eq(applications.jobId, jobs.id))
+    .where(eq(jobs.id, id));
+  if (!row) return null;
+
+  const jobRequirements = await db
+    .select()
+    .from(requirements)
+    .where(eq(requirements.jobId, id))
+    .orderBy(asc(requirements.position));
+
+  return { ...row, requirements: jobRequirements };
 }
 
 /** Delete a job. Its application is removed by the foreign key cascade. */
