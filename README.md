@@ -20,7 +20,7 @@ Most job trackers give you a vague "87% match" score and keep your resume on the
 - [ ] Match requirements against your resume
 - [x] Saved jobs page with delete
 - [x] Job detail page with application status tracking
-- [ ] Board view for tracking application status
+- [x] Board view for tracking application status
 - [ ] Follow-up reminders
 
 ## Tech stack
@@ -28,7 +28,7 @@ Most job trackers give you a vague "87% match" score and keep your resume on the
 - Next.js (App Router) + TypeScript
 - Tailwind CSS
 - Postgres + Drizzle ORM
-- Chrome extension, Manifest V3 (planned)
+- Chrome extension, Manifest V3
 
 ## Data model
 
