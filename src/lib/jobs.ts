@@ -61,6 +61,8 @@ export async function listJobs() {
     .orderBy(desc(jobs.createdAt));
 }
 
+export type JobListItem = Awaited<ReturnType<typeof listJobs>>[number];
+
 /** A job with its application and extracted requirements, or null. */
 export async function getJobDetails(id: string) {
   const db = getDb();

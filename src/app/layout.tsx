@@ -33,6 +33,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <Link href="/jobs" className="text-zinc-600 hover:text-foreground dark:text-zinc-400">
               Jobs
             </Link>
+            <Link href="/board" className="text-zinc-600 hover:text-foreground dark:text-zinc-400">
+              Board
+            </Link>
             <Link href="/resume" className="text-zinc-600 hover:text-foreground dark:text-zinc-400">
               Resume
             </Link>
