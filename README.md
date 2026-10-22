@@ -16,7 +16,7 @@ Most job trackers give you a vague "87% match" score and keep your resume on the
 ## Planned features
 
 - [x] Browser extension to save a job posting from the page you're on
-- [ ] Extract required and nice-to-have skills from a posting
+- [x] Extract required and nice-to-have skills from a posting (Gemini)
 - [ ] Match requirements against your resume
 - [x] Saved jobs page with delete
 - [x] Job detail page with application status tracking

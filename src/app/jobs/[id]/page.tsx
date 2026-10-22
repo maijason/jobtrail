@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { z } from "zod";
 import { getJobDetails } from "@/lib/jobs";
 import { dateFormat } from "../status";
+import { ExtractButton } from "./extract-button";
 import { StatusSelect } from "./status-select";
 
 export const metadata: Metadata = {
@@ -70,10 +71,17 @@ async function JobDetails({
       </header>
 
       <section className="mt-10">
-        <h2 className="font-medium">Requirements</h2>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="font-medium">Requirements</h2>
+          <ExtractButton
+            jobId={job.id}
+            hasRequirements={requirements.length > 0}
+          />
+        </div>
         {requirements.length === 0 ? (
           <p className="mt-2 text-sm text-zinc-500">
-            Requirements haven&apos;t been extracted for this job yet.
+            Not extracted yet. Extracting sends this job&apos;s description to
+            Gemini.
           </p>
         ) : (
           <div className="mt-3 grid gap-6 sm:grid-cols-2">
