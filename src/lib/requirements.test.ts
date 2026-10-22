@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import {
+  MAX_DESCRIPTION_CHARS,
   buildExtractionPrompt,
   extractRequirements,
   type GenerateJson,
@@ -58,6 +59,16 @@ describe("extractRequirements", () => {
       type: "object",
       properties: { requirements: { type: "array" } },
     });
+  });
+
+  it("caps very long descriptions to keep calls cheap", async () => {
+    const generate = fakeModel({ requirements: [] });
+
+    await extractRequirements("a".repeat(MAX_DESCRIPTION_CHARS + 5_000), generate);
+
+    const [{ prompt }] = generate.mock.calls[0];
+    expect(prompt).toContain("a".repeat(MAX_DESCRIPTION_CHARS));
+    expect(prompt).not.toContain("a".repeat(MAX_DESCRIPTION_CHARS + 1));
   });
 
   it("trims text and drops duplicates", async () => {

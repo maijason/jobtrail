@@ -2,6 +2,10 @@ import { z } from "zod";
 
 const MAX_REQUIREMENTS = 40;
 
+// Long postings are mostly boilerplate past this point. Capping the input
+// keeps each call cheap (roughly 5,000 tokens at most).
+export const MAX_DESCRIPTION_CHARS = 20_000;
+
 export const extractedRequirementsSchema = z.object({
   requirements: z
     .array(
@@ -54,7 +58,7 @@ export async function extractRequirements(
   generate: GenerateJson,
 ): Promise<ExtractedRequirement[]> {
   const raw = await generate({
-    prompt: buildExtractionPrompt(description),
+    prompt: buildExtractionPrompt(description.slice(0, MAX_DESCRIPTION_CHARS)),
     schema: z.toJSONSchema(extractedRequirementsSchema),
   });
 
