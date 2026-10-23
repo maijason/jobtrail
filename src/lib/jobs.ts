@@ -1,7 +1,13 @@
 import { asc, desc, eq } from "drizzle-orm";
 import { z } from "zod";
 import { getDb } from "@/db";
-import { applications, jobs, requirements, type Job } from "@/db/schema";
+import {
+  applications,
+  jobs,
+  matches,
+  requirements,
+  type Job,
+} from "@/db/schema";
 import { normalizeJobUrl } from "@/lib/url";
 
 export const saveJobSchema = z.object({
@@ -74,8 +80,16 @@ export async function getJobDetails(id: string) {
   if (!row) return null;
 
   const jobRequirements = await db
-    .select()
+    .select({
+      id: requirements.id,
+      kind: requirements.kind,
+      text: requirements.text,
+      verdict: matches.verdict,
+      evidence: matches.evidence,
+      note: matches.note,
+    })
     .from(requirements)
+    .leftJoin(matches, eq(matches.requirementId, requirements.id))
     .where(eq(requirements.jobId, id))
     .orderBy(asc(requirements.position));
 

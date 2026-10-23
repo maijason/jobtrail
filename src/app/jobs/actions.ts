@@ -6,6 +6,7 @@ import { z } from "zod";
 import { statusSchema, updateApplicationStatus } from "@/lib/applications";
 import { extractAndSaveRequirements } from "@/lib/extract-job";
 import { deleteJob } from "@/lib/jobs";
+import { matchJobToResume } from "@/lib/match-job";
 
 export async function deleteJobAction(formData: FormData) {
   const id = z.uuid().safeParse(formData.get("id"));
@@ -50,11 +51,39 @@ export async function extractRequirementsAction(
     return { status: "done", count };
   } catch (error) {
     console.error("Requirement extraction failed:", error);
-    return { status: "error", message: describeExtractionError(error) };
+    return { status: "error", message: describeLlmError(error) };
   }
 }
 
-function describeExtractionError(error: unknown): string {
+export type MatchState =
+  | { status: "idle" }
+  | { status: "error"; message: string }
+  | { status: "done" };
+
+export async function matchResumeAction(
+  _previous: MatchState,
+  formData: FormData,
+): Promise<MatchState> {
+  const jobId = z.uuid().safeParse(formData.get("jobId"));
+  if (!jobId.success) return { status: "error", message: "Unknown job." };
+
+  try {
+    const result = await matchJobToResume(jobId.data);
+    if (result.status === "no-resume") {
+      return { status: "error", message: "Save your resume first." };
+    }
+    if (result.status === "no-requirements") {
+      return { status: "error", message: "Extract requirements first." };
+    }
+    refresh();
+    return { status: "done" };
+  } catch (error) {
+    console.error("Resume matching failed:", error);
+    return { status: "error", message: describeLlmError(error) };
+  }
+}
+
+function describeLlmError(error: unknown): string {
   if (error instanceof ApiError) {
     if (error.status === 429) {
       return "Hit Gemini's rate limit. Wait a minute and try again.";
@@ -66,5 +95,5 @@ function describeExtractionError(error: unknown): string {
   if (error instanceof Error && error.message.includes("GEMINI_API_KEY")) {
     return error.message;
   }
-  return "Couldn't extract requirements. Try again in a moment.";
+  return "Something went wrong talking to Gemini. Try again in a moment.";
 }
