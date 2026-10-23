@@ -77,6 +77,24 @@ export const requirements = pgTable(
   (table) => [index("requirements_job_id_idx").on(table.jobId)],
 );
 
+export const matchVerdict = pgEnum("match_verdict", [
+  "met",
+  "partial",
+  "missing",
+]);
+
+// How well your resume covers one requirement, with the line that shows it.
+export const matches = pgTable("matches", {
+  requirementId: uuid("requirement_id")
+    .primaryKey()
+    .references(() => requirements.id, { onDelete: "cascade" }),
+  verdict: matchVerdict("verdict").notNull(),
+  // An exact quote from the resume, checked before saving.
+  evidence: text("evidence"),
+  note: text("note"),
+  createdAt: timestamps.createdAt,
+});
+
 export const resumes = pgTable("resumes", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull(),
@@ -88,4 +106,5 @@ export type Job = typeof jobs.$inferSelect;
 export type NewJob = typeof jobs.$inferInsert;
 export type Application = typeof applications.$inferSelect;
 export type Requirement = typeof requirements.$inferSelect;
+export type Match = typeof matches.$inferSelect;
 export type Resume = typeof resumes.$inferSelect;
